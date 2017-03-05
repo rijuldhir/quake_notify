@@ -57,7 +57,8 @@ public final class QueryUtils {
                 String mag = prop.getString("mag");
                 String place = prop.getString("place");
                 String time = prop.getString("time");
-                Quakes object = new Quakes(mag,place,time);
+                String url = prop.getString("url");
+                Quakes object = new Quakes(mag,place,time,url);
                 earthquakes.add(object);
             }
             // build up a list of Earthquake objects with the corresponding data.

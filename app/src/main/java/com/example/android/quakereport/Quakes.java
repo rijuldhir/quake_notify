@@ -12,20 +12,26 @@ public class Quakes {
     private String mag;
     private String place;
     private String date;
+    private String url;
     private long timeInMilliseconds;
 
 
-    public Quakes(String mag,String place, String date)
+    public Quakes(String mag,String place, String date, String url)
     {
         this.date=date;
         this.mag=mag;
         this.place=place;
         timeInMilliseconds=Long.parseLong(date);
+        this.url =url;
         }
 
 
     public String getMag()
     {return this.mag;}
+
+    public String getUrl(){
+        return this.url;
+    }
 
     public String getLocation()
     {

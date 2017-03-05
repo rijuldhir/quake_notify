@@ -15,8 +15,12 @@
  */
 package com.example.android.quakereport;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -44,15 +48,29 @@ public class EarthquakeActivity extends AppCompatActivity {
 
 
         // Find a reference to the {@link ListView} in the layout
-        ListView earthquakeListView = (ListView) findViewById(R.id.list);
+        final ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
         // Create a new {@link ArrayAdapter} of earthquakes
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(
           //      this, android.R.layout.simple_list_item_1, earthquakes);
-        QuakeAdapter adapter = new QuakeAdapter(this,earthquakes);
+        final QuakeAdapter adapter = new QuakeAdapter(this,earthquakes);
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
         earthquakeListView.setAdapter(adapter);
+
+        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                //Quakes w = adapter.getItem(view.getVerticalScrollbarPosition());
+                // Did this type first
+                Quakes w = adapter.getItem(position);
+                String url = w.getUrl();
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
     }
 }
