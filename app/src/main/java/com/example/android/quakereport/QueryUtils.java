@@ -9,7 +9,6 @@ package com.example.android.quakereport;
  import org.json.JSONException;
  import org.json.JSONObject;
  import java.util.ArrayList;
-
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
  */
@@ -50,10 +49,10 @@ public final class QueryUtils {
         // Catch the exception so the app doesn't crash, and print the error message to the logs.
         try {
             JSONObject root = new JSONObject(SAMPLE_JSON_RESPONSE);
-            JSONArray features = root.getJSONArray("features");
-            for(int i=0;i<10;i++)
+            JSONArray featuresarray = root.getJSONArray("features");
+            for(int i=0;i<featuresarray.length();i++)
             {
-                JSONObject obj = features.getJSONObject(i);
+                JSONObject obj = featuresarray.getJSONObject(i);
                 JSONObject prop = obj.optJSONObject("properties");
                 String mag = prop.getString("mag");
                 String place = prop.getString("place");
