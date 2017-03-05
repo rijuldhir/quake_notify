@@ -1,5 +1,6 @@
 package com.example.android.quakereport;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,8 +13,6 @@ public class Quakes {
     private String place;
     private String date;
     private long timeInMilliseconds;
-    private String loc;
-    private String Place;
 
 
     public Quakes(String mag,String place, String date)
@@ -22,26 +21,16 @@ public class Quakes {
         this.mag=mag;
         this.place=place;
         timeInMilliseconds=Long.parseLong(date);
-        int i = place.indexOf("of");
-        if(i==-1)
-        {loc ="Near the";
-            Place = place.substring(i+1,place.length());
         }
-        else{
-            loc = place.substring(0,i+2);
-            Place = place.substring(i+3,place.length());
-        }
-    }
+
+
     public String getMag()
     {return this.mag;}
 
-    public String getLoc()
+    public String getLocation()
     {
-        return this.loc;
+        return this.place;
     }
-
-    public String getPlace()
-    {return this.Place;}
 
     public long getTimeInMilliseconds()
     {
