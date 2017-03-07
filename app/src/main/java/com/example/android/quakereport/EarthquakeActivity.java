@@ -26,7 +26,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Loader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,19 +46,23 @@ import java.util.List;
 import static android.R.attr.data;
 import static com.example.android.quakereport.EarthquakeActivity.LOG_TAG;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<Quakes>> {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
     private static final String USGS_REQUEST_URL ="https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=5&limit=20";
     private QuakeAdapter adapter;
-
+    private static final int EARTHQUAKE_LOADER_ID = 1;
+    private  TextView mEmptyStateTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+
 
         final ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
+        earthquakeListView.setEmptyView(mEmptyStateTextView);
         // Create a new {@link ArrayAdapter} of earthquakes
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(
         //      this, android.R.layout.simple_list_item_1, earthquakes);
@@ -88,14 +96,49 @@ public class EarthquakeActivity extends AppCompatActivity {
         earthquakes.add(new Quakes("4.5","Rio de Janeiro","Feb 2 , 2017"));
         earthquakes.add(new Quakes("4.5","Paris","Feb 2 , 2017"));*/
 
-        EarthquakeAsync level = new EarthquakeAsync();
-        level.execute(USGS_REQUEST_URL);
+        /*EarthquakeAsync level = new EarthquakeAsync();
+        level.execute(USGS_REQUEST_URL);*/
+        LoaderManager loaderManager = getLoaderManager();
+
+        // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+        // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+        // because this activity implements the LoaderCallbacks interface).
+        loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
 
         // Find a reference to the {@link ListView} in the layout
 
     }
 
-    private class EarthquakeAsync extends AsyncTask<String,Void,ArrayList<Quakes>>
+    @Override
+    public Loader<ArrayList<Quakes>> onCreateLoader(int id, Bundle args) {
+        Log.i(LOG_TAG,"This is OncreateLoader");
+        return new EarthquakeLoader(this, USGS_REQUEST_URL);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<ArrayList<Quakes>> loader, ArrayList<Quakes> data) {
+        Log.i(LOG_TAG,"This is OnLoadFinished");
+        mEmptyStateTextView.setText("no_earthquakes");
+        if (data.size()==0 || data.get(0)==null) {
+            Toast.makeText(getApplicationContext(),"Cannot Connect to Net or No Data Available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        adapter.clear();
+
+        // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+        // data set. This will trigger the ListView to update.
+        if (data != null && !data.isEmpty()) {
+            adapter.addAll(data);
+        }
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<ArrayList<Quakes>> loader) {
+        adapter.clear();
+    }
+
+    /*private class EarthquakeAsync extends AsyncTask<String,Void,ArrayList<Quakes>>
     {
         @Override
         protected ArrayList<Quakes> doInBackground(String... strings) {
@@ -136,8 +179,8 @@ public class EarthquakeActivity extends AppCompatActivity {
             try {
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
-                urlConnection.setReadTimeout(10000 /* milliseconds */);
-                urlConnection.setConnectTimeout(15000 /* milliseconds */);
+                urlConnection.setReadTimeout(10000 );
+                urlConnection.setConnectTimeout(15000 );
                 urlConnection.connect();
                 if(urlConnection.getResponseCode()==200)
                 {inputStream = urlConnection.getInputStream();
@@ -162,7 +205,7 @@ public class EarthquakeActivity extends AppCompatActivity {
         /**
          * Convert the {@link InputStream} into a String which contains the
          * whole JSON response from the server.
-         */
+         *\/
         private String readFromStream(InputStream inputStream) throws IOException {
             StringBuilder output = new StringBuilder();
             if (inputStream != null) {
@@ -192,5 +235,5 @@ public class EarthquakeActivity extends AppCompatActivity {
                 adapter.addAll(data);
             }
         }
-    }
+    }*/
 }
