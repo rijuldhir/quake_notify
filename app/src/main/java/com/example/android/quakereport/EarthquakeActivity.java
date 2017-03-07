@@ -17,6 +17,8 @@ package com.example.android.quakereport;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.LoaderManager;
@@ -53,13 +56,23 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     private QuakeAdapter adapter;
     private static final int EARTHQUAKE_LOADER_ID = 1;
     private  TextView mEmptyStateTextView;
+    private ProgressBar progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
-
-
+        progress = (ProgressBar) findViewById(R.id.progress);
+        ConnectivityManager cm =(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if(!isConnected)
+        {
+            progress.setVisibility(View.GONE);
+            mEmptyStateTextView.setText("No Internet Connection");
+            return;
+        }
         final ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
         earthquakeListView.setEmptyView(mEmptyStateTextView);
@@ -118,8 +131,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoadFinished(Loader<ArrayList<Quakes>> loader, ArrayList<Quakes> data) {
         Log.i(LOG_TAG,"This is OnLoadFinished");
+        progress.setVisibility(View.GONE);
         mEmptyStateTextView.setText("no_earthquakes");
-        if (data.size()==0 || data.get(0)==null) {
+        if (data==null) {
             Toast.makeText(getApplicationContext(),"Cannot Connect to Net or No Data Available",Toast.LENGTH_LONG).show();
             return;
         }

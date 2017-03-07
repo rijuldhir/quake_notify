@@ -41,6 +41,8 @@ public class EarthquakeLoader extends AsyncTaskLoader<ArrayList<Quakes>>  {
         }
 
         URL basic = createUrl(url);
+        if(basic==null)
+            return null;
 
         String jsonResponse = "";
         try {
