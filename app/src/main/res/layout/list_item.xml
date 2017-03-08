@@ -19,7 +19,7 @@
     />
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="2"
         android:orientation="vertical"
         android:layout_gravity="center_vertical"
@@ -27,10 +27,9 @@
         android:layout_marginStart="16dp"
         >
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             tools:text="35 km N of"
-            android:layout_weight="1"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
             android:maxLines="1"
@@ -40,21 +39,20 @@
             android:id="@+id/textView2"
             />
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             tools:text="San Francisco"
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/textColorEarthquakeLocation"
             android:textSize="16sp"
-            android:layout_weight="1"
             android:id="@+id/textView5"
             />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="16dp"
@@ -62,23 +60,21 @@
         android:orientation="vertical"
         >
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             tools:text="Feb,2 2017"
-            android:layout_weight="1"
             android:layout_gravity="end"
             android:textColor="@color/textColorEarthquakeDetails"
             android:textSize="12sp"
             android:id="@+id/textView3"
             />
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             tools:text="5:00 PM"
             android:layout_gravity="end"
             android:textColor="@color/textColorEarthquakeDetails"
             android:textSize="12sp"
-            android:layout_weight="1"
             android:id="@+id/textView4"
             />
 

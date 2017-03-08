@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -47,6 +48,7 @@ public class QuakeAdapter extends ArrayAdapter<Quakes> {
         else{
             loc = Location.substring(0,i+2);
             Place = Location.substring(i+3,Location.length());}
+
 
         TextView located = (TextView) listItemView.findViewById(R.id.textView2);
         located.setText(loc);

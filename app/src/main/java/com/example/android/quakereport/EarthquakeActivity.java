@@ -74,7 +74,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             return;
         }
         final ListView earthquakeListView = (ListView) findViewById(R.id.list);
-
+        Utility.setListViewHeightBasedOnChildren(earthquakeListView);
         earthquakeListView.setEmptyView(mEmptyStateTextView);
         // Create a new {@link ArrayAdapter} of earthquakes
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(
